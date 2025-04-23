@@ -22,24 +22,23 @@ import { Category } from './restaurant/category.entity';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`, // loads .env file into process.env
     }), // loads .env file into process.env
-    TypeOrmModule.forRoot(),
-    // TypeOrmModule.forRootAsync({
-    //   inject: [ConfigService],
-    //   useFactory: (config: ConfigService) => {
-    //     return {
-    //       type: 'postgres', // changed from sqlite
-    //       host: config.get<string>('DB_HOST'),
-    //       port: config.get<number>('DB_PORT'),
-    //       username: config.get<string>('DB_USERNAME'),
-    //       password: config.get<string>('DB_PASSWORD'),
-    //       database: config.get<string>('DB_NAME'),
-    //       entities: [User, Report, Restaurant, MenuItem, Category],
-    //       synchronize: process.env.NODE_ENV === 'development', // true only in dev
-    //       migrations: ['dist/migrations/*.js'], // Path to compiled migrations
-    //       migrationsRun: process.env.NODE_ENV === 'production', // Run migrations in prod
-    //     };
-    //   },
-    // }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          type: 'postgres',
+          host: config.get<string>('DB_HOST'),
+          port: config.get<number>('DB_PORT'),
+          username: config.get<string>('DB_USERNAME'),
+          password: config.get<string>('DB_PASSWORD'),
+          database: config.get<string>('DB_NAME'),
+          entities: [User, Report, Restaurant, MenuItem, Category],
+          synchronize: process.env.NODE_ENV === 'development',
+          migrations: ['dist/migrations/*.js'],
+          migrationsRun: process.env.NODE_ENV === 'production',
+        };
+      },
+    }),
     MessagesModule,
     UsersModule,
     ReportsModule,

@@ -3,7 +3,7 @@ name: Deploy NestJS to Render
 on:
   push:
     branches:
-      - main # or whichever branch you want to deploy from
+      - master # or whichever branch you want to deploy from
 
 jobs:
   build-and-deploy:

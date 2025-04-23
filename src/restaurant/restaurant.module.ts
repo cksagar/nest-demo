@@ -5,12 +5,12 @@ import { MenuItem } from './menu-item.entity';
 import { SeedService } from './tobe-deleted/seed.service';
 import { SeedController } from './tobe-deleted/seed.controller';
 import { Category } from './category.entity';
-import { CategoryService } from './tobe-deleted/category-seed.service';
-import { CategoryController } from './tobe-deleted/category-seed.controller';
+import { RestaurantService } from './restaurant.service';
+import { RestaurantController } from './restaurant.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Restaurant, MenuItem, Category])],
-  providers: [SeedService, CategoryService],
-  controllers: [SeedController, CategoryController],
+  providers: [SeedService, RestaurantService],
+  controllers: [SeedController, RestaurantController],
 })
 export class RestaurantModule {}

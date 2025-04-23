@@ -10,7 +10,6 @@ import { User } from './users/user.entity';
 import { Report } from './reports/report.entity';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { RestaurantController } from './restaurant/restaurant.controller';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import cookieSession from 'cookie-session';
 import { Restaurant } from './restaurant/restaurant.entity';
@@ -45,7 +44,7 @@ import { Category } from './restaurant/category.entity';
     AuthModule,
     RestaurantModule,
   ],
-  controllers: [AppController, RestaurantController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {

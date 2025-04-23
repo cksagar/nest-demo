@@ -17,7 +17,11 @@
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:cov": "cross-env NODE_ENV=test jest --coverage",
     "test:debug": "cross-env NODE_ENV=test node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --maxWorkers=1"
+    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --maxWorkers=1",
+    "typeorm": "cross-env NODE_ENV=development ts-node --transpile-only ./node_modules/typeorm/cli.js",
+    "migration:generate": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate src/migrations/initial-schema --dataSource ./data-source.ts",
+    "migration:revert": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert --dataSource ./data-source.ts",
+    "migration:run": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run --dataSource ./data-source.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -28,10 +32,10 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "pg": "^8.14.1",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1",
-    "sqlite3": "^5.1.7",
-    "typeorm": "^0.3.22"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -63,6 +67,8 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "typeorm": "^0.3.22",
+    "typeorm-ts-node-commonjs": "^0.3.20",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
   },

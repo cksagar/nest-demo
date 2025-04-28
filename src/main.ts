@@ -21,13 +21,13 @@ async function bootstrap() {
     origin: [
       'http://localhost:5173', // local dev
       'https://react-food-app-lime.vercel.app', // Vercel deployment
-      'https://react-food-app-chetans-projects-012c5db0.vercel.app/',
-      'react-food-app-cz9v.onrender.com',
-      'https://react-food-app-git-master-chetans-projects-012c5db0.vercel.app/',
+      'https://react-food-app-chetans-projects-012c5db0.vercel.app', // Vercel deployment
+      'react-food-app-cz9v.onrender.com', // Render deployment
+      'https://react-food-app-git-master-chetans-projects-012c5db0.vercel.app', // Vercel deployment
     ],
     credentials: true,
   });
-  app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix('/api/v1');
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

@@ -23,9 +23,28 @@ export class RestaurantService {
       relations: ['menu'],
     });
   }
-  getAllCategories() {
-    return this.categoryRepo.find();
+
+  async getAllCategories() {
+    return this.categoryRepo.find({
+      relations: ['menuItems'], // include menu items
+      order: { name: 'ASC' }, // optional: sort categories alphabetically
+    });
   }
+
+  getRestaurantById(id: number) {
+    return this.restaurantRepo.findOne({
+      where: { id },
+      relations: ['menu'],
+    });
+  }
+
+  getCategoryById(id: number) {
+    return this.categoryRepo.findOne({
+      where: { id },
+      relations: ['menuItems'],
+    });
+  }
+
   getAllMenuItems() {
     return this.menuRepo.find();
   }

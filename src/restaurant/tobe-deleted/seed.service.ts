@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Restaurant } from '../restaurant.entity';
 import { MenuItem } from '../menu-item.entity';
-import { restaurantData } from './restaurant-data';
 import { Category } from '../category.entity';
+import { restaurantData } from './restaurant-data';
 import { categoryData } from './category.data';
 
 @Injectable()
@@ -21,9 +21,18 @@ export class SeedService {
   ) {}
 
   async seedAll() {
+    await this.clearData(); // Optionally clear data before seeding
     await this.seedCategories();
     await this.seedRestaurants();
     console.log('🌱 All data seeded successfully!');
+  }
+
+  async clearData() {
+    console.log('🧹 Clearing existing data...');
+    await this.menuRepo.query(
+      `TRUNCATE TABLE "menu_item", "restaurant", "category" RESTART IDENTITY CASCADE`,
+    );
+    console.log('✅ Data cleared successfully!');
   }
 
   private async seedCategories() {
@@ -40,12 +49,43 @@ export class SeedService {
     const existing = await this.restaurantRepo.count();
     if (existing === 0) {
       for (const data of restaurantData) {
-        const { menu, ...rest } = data;
-        const restaurant = this.restaurantRepo.create(rest);
-        restaurant.menu = menu.map((item) => this.menuRepo.create(item));
-        await this.restaurantRepo.save(restaurant);
+        const { menu, ...restaurantRest } = data;
+        const restaurant = this.restaurantRepo.create(restaurantRest);
+
+        // Loop over menu items and create them
+        restaurant.menu = [];
+        for (const item of menu) {
+          const category = await this.categoryRepo.findOne({
+            where: { name: item.category },
+          });
+
+          // Check if category exists before creating the menu item
+          if (!category) {
+            console.log(
+              `⚠️ Category "${item.category}" not found. Skipping menu item "${item.name}".`,
+            );
+            continue;
+          }
+
+          const menuItem = this.menuRepo.create({
+            ...item,
+            category, // Set the category
+            restaurant, // Link to the restaurant
+          });
+          restaurant.menu.push(menuItem);
+        }
+
+        // Save the restaurant and its related menu items
+        try {
+          await this.restaurantRepo.save(restaurant);
+          console.log(`✅ Restaurant "${restaurant.name}" inserted`);
+        } catch (error) {
+          console.error(
+            `❌ Failed to insert restaurant "${restaurant.name}":`,
+            error,
+          );
+        }
       }
-      console.log('✅ Restaurants inserted');
     } else {
       console.log('⚠️ Restaurants already exist, skipping...');
     }

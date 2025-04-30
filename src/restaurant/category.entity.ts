@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+import { Restaurant } from './restaurant.entity';
+import { MenuItem } from './menu-item.entity';
 
 @Entity('category')
 export class Category {
@@ -49,4 +57,12 @@ export class Category {
 
   @Column({ type: 'json', nullable: true })
   ribbon: object; // Ribbon-related info (e.g., promotion labels)
+
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.categories, {
+    onDelete: 'CASCADE',
+  })
+  restaurant: Restaurant;
+
+  @OneToMany(() => MenuItem, (menuItem) => menuItem.category)
+  menuItems: MenuItem[];
 }

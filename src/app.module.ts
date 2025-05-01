@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
 import { BikesModule } from './bikes/bikes.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { UploadModule } from './upload/upload.module';
 
 import { Restaurant } from './restaurant/restaurant.entity';
 import { MenuItem } from './restaurant/menu-item.entity';
@@ -20,6 +21,8 @@ import { User } from './users/user.entity';
 import { Report } from './reports/report.entity';
 import { Brand } from './bikes/entities/brand.entity';
 import { Model } from './bikes/entities/model.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -58,6 +61,11 @@ import { Model } from './bikes/entities/model.entity';
     AuthModule,
     RestaurantModule,
     BikesModule,
+    UploadModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'converted'),
+      serveRoot: '/converted', // <-- match the return path in your service
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

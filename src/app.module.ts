@@ -11,7 +11,6 @@ import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
 import { BikesModule } from './bikes/bikes.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
-import { UploadModule } from './upload/upload.module';
 
 import { Restaurant } from './restaurant/restaurant.entity';
 import { MenuItem } from './restaurant/menu-item.entity';
@@ -61,7 +60,6 @@ import { join } from 'path';
     AuthModule,
     RestaurantModule,
     BikesModule,
-    UploadModule,
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'converted'),
       serveRoot: '/converted', // <-- match the return path in your service
